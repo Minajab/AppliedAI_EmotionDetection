@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import load_files
 
-emotion_dataset_directory = "C:\\University\\pythonProject1\\AppliedAI_EmotionDetection\\Dataset\\"
+emotion_dataset_directory = "E:\\University\\pythonProject1\\AppliedAI_EmotionDetection\\Dataset\\"
 
 emotion_dataset = load_files(emotion_dataset_directory, shuffle=False)
 
