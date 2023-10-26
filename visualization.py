@@ -1,55 +1,65 @@
-
 import os
-import cv2
 import random
-import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.datasets import load_files
+import numpy as np
+from PIL import Image
 
-emotion_dataset_directory = "E:\\University\\pythonProject1\\AppliedAI_EmotionDetection\\Dataset\\"
 
-emotion_dataset = load_files(emotion_dataset_directory, shuffle=False)
+def load_img(p, s=(128, 128)):
+    img = Image.open(p).convert('L')
+    img = img.resize(s)
+    return np.array(img)
 
-emotions = emotion_dataset.target_names
 
-class_distribution = [len(class_files) for class_files in emotion_dataset.filenames]
+def class_dist(d):
+    counts = {}
+    for folder in os.listdir(d):
+        f_path = os.path.join(d, folder)
+        if os.path.isdir(f_path):
+            imgs = [i for i in os.listdir(f_path) if i.endswith(('.png', '.jpg', '.jpeg'))]
+            counts[folder] = len(imgs)
 
-plt.figure(figsize=(10, 5))
-plt.bar(emotions, class_distribution, color='lightblue')
-plt.xlabel('Emotion Class')
-plt.ylabel('Number of Images')
-plt.title('Distribution of Images Across Different Emotions')
-plt.xticks(rotation=45)
-plt.show()
+    plt.bar(counts.keys(), counts.values())
+    plt.xlabel('Class')
+    plt.ylabel('# Images')
+    plt.title('Class Distribution')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
 
-sample_images = []
-num_samples_per_emotion = 5
 
-for emotion in emotions:
-    emotion_dir = os.path.join(emotion_dataset_directory, emotion)
-    image_files = random.sample(os.listdir(emotion_dir), num_samples_per_emotion)
+def sample_imgs(d, s=(128, 128)):
+    imgs = []
+    labels = []
+    for folder in os.listdir(d):
+        f_path = os.path.join(d, folder)
+        if os.path.isdir(f_path):
+            i_files = [i for i in os.listdir(f_path) if i.endswith(('.png', '.jpg', '.jpeg'))]
+            for i in random.sample(i_files, min(5, len(i_files))):
+                imgs.append(load_img(os.path.join(f_path, i), s))
+                labels.append(folder)
 
-    for image_file in image_files:
-        image_path = os.path.join(emotion_dir, image_file)
-        image = cv2.imread(image_path)
-        sample_images.append((image, emotion))
+    _, ax = plt.subplots(5, 5)
+    for idx, a in enumerate(ax.flatten()):
+        if idx < len(imgs):
+            a.imshow(imgs[idx], cmap='gray')
+            a.set_title(labels[idx])
+            a.axis('off')
+    plt.tight_layout()
+    plt.show()
+    return imgs
 
-fig, axs = plt.subplots(5, 5, figsize=(10, 10))
-for i in range(5):
-    for j in range(5):
-        img, emotion = sample_images[i * 5 + j]
-        axs[i, j].imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-        axs[i, j].set_title(emotion)
-        axs[i, j].axis('off')
-plt.show()
 
-for image, emotion in sample_images:
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    plt.hist(gray_image.ravel(), bins=256, range=(0, 256), density=True, alpha=0.5, label=emotion)
+def pixel_dist(img_list):
+    vals = [v for img in img_list for v in img.ravel()]
+    plt.hist(vals, bins=256, range=(0, 256), color='gray')
+    plt.xlabel('Pixel Value')
+    plt.ylabel('Count')
+    plt.show()
 
-plt.xlabel('Pixel Intensity')
-plt.ylabel('Frequency')
-plt.title('Pixel Intensity Distribution in Sample Images')
-plt.legend()
-plt.show()
 
+if __name__ == "__main__":
+    dir_path = "E:\\University\\pythonProject1\\AppliedAI_EmotionDetection\\Dataset\\"
+    class_dist(dir_path)
+    imgs = sample_imgs(dir_path)
+    pixel_dist(imgs)
