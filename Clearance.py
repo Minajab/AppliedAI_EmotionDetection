@@ -158,6 +158,7 @@ def morphology():
 
 #The main function calls all processing functions in a specific order.
 def main():
+    #Provide the input directory that points to the folder containing subfolders for images of people expressing different emotions.
     Input_directory = "C:\\Users\\mahshad\\Desktop\\AI\\Data\\"
     os.chdir(Input_directory)
     Deleting_background()
