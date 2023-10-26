@@ -43,6 +43,7 @@ In this part, we developed suitable datasets that we will later need for trainin
 
 ```bash
 python data_cleaning_script.py
+```
 
 ## Visualization
 
