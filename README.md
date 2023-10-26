@@ -61,8 +61,6 @@ For effective visualizations, refer to the following scripts:
 `pixel_intensity_distribution.py`: Analyzes and displays pixel intensity distribution.
 
 
-Certainly! I'll provide a README.md specifically focusing on the visualization part of the project, in the style you've shared previously.
-
 Facial Emotion Recognition: Data Visualization
 Overview
 In the realm of our Facial Emotion Recognition project, understanding and visualizing the dataset is of paramount importance. The visualization segment seeks to provide insights into the distribution, representation, and nature of our image dataset.
