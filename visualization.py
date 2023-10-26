@@ -6,10 +6,14 @@ from PIL import Image
 
 def load_img(p, s=(128, 128)):
     """
-    Load an image from a path, convert it to grayscale, and resize.
+    Load an image from a path, convert it to grayscale, and resize it.
     """
-    img = Image.open(p).convert('L')  # Open and convert image to grayscale
-    img = img.resize(s)  # Resize the image
+    
+    # Open and convert the image to grayscale
+    img = Image.open(p).convert('L') 
+    
+    # Resize the image
+    img = img.resize(s)  
     return np.array(img)
 
 def class_dist(d):
@@ -18,13 +22,16 @@ def class_dist(d):
     """
     counts = {}
     for folder in os.listdir(d):
-        f_path = os.path.join(d, folder)  # Get the full path of the folder
+        # Get the full path of the folder
+        f_path = os.path.join(d, folder)  
         if os.path.isdir(f_path):
             # List all image files in the directory
             imgs = [i for i in os.listdir(f_path) if i.endswith(('.png', '.jpg', '.jpeg'))]
-            counts[folder] = len(imgs)  # Count the images for each class
-    
-    plt.bar(counts.keys(), counts.values())  # Plot the distribution
+            # Count the images for each class
+            counts[folder] = len(imgs)  
+
+    # Plot the distribution
+    plt.bar(counts.keys(), counts.values())  
     plt.xlabel('Class')
     plt.ylabel('# Images')
     plt.title('Class Distribution')
@@ -47,12 +54,15 @@ def sample_imgs(d, s=(128, 128)):
             for i in random.sample(i_files, min(5, len(i_files))):
                 imgs.append(load_img(os.path.join(f_path, i), s))
                 labels.append(folder)
-
-    _, ax = plt.subplots(5, 5)  # Create a 5x5 grid for displaying images
+                
+    # Create a 5x5 grid for displaying images
+    _, ax = plt.subplots(5, 5)  
     for idx, a in enumerate(ax.flatten()):
         if idx < len(imgs):
-            a.imshow(imgs[idx], cmap='gray')  # Display the image in grayscale
-            a.set_title(labels[idx])  # Set the emotion class as the title
+            # Display the image in grayscale
+            a.imshow(imgs[idx], cmap='gray') 
+            # Set the emotion class as the title
+            a.set_title(labels[idx])  
             a.axis('off')
     plt.tight_layout()
     plt.show()
@@ -63,7 +73,8 @@ def pixel_dist(img_list):
     """
     # Extract all pixel values from the list of images
     vals = [v for img in img_list for v in img.ravel()]
-    plt.hist(vals, bins=256, range=(0, 256), color='gray')  # Plot a histogram of pixel intensities
+    # Plot a histogram of pixel intensities
+    plt.hist(vals, bins=256, range=(0, 256), color='gray')  
     plt.xlabel('Pixel Value')
     plt.ylabel('Count')
     plt.show()
