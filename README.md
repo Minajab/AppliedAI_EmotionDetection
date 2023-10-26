@@ -44,4 +44,19 @@ In this part, we developed suitable datasets that we will later need for trainin
 ```bash
 python data_cleaning_script.py
 
+## Visualization
 
+
+This part is integral for understanding our dataset's structure:
+
+- **Class Distribution Visualization**: A graphical representation to visualize the number of images within each emotion category.
+- **Sample Image Display** : View random images from each class, offering a quick snapshot of our dataset.
+- **Pixel Intensity Distribution** : Understand pixel intensity spread, aiding in recognizing variations in image brightness and contrast.
+
+For effective visualizations, refer to the following scripts:
+
+`class_distribution.py`: Generates a bar chart for emotion class distribution.
+`display_sample_images.py`: Displays sample images from each class.
+`pixel_intensity_distribution.py`: Analyzes and displays pixel intensity distribution.
+
+Use the below commands for execution:
