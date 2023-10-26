@@ -1,30 +1,48 @@
-# AppliedAI_EmotionDetection
-Applied AI course project in Concordia University
+# Facial Emotion Recognition
 
-Welcome to A.I.ducation Analytics, where the future of AI-driven academic feedback takes shape. Dive into a world where, as AI lectures unfold complex algorithms, instructors are no longer in the dark! Your innovative system scrutinizes students’ facial responses in real time, distinguishing the curious from the overwhelmed. A sleek dashboard offers the instructor immediate insights—30% engaged, 20% neutral, and 10% nearing cognitive overload. Smart AI suggestions nudge adjustments in real-time, ensuring lectures evolve in response to learners’ needs. As graduate students on this frontier project, you’re not just coding—you’re sculpting the next phase of dynamic, AI-enhanced education.
+## Overview
 
-## Project Objective
+The objective of this project is to develop a Deep Learning Convolutional Neural Network (CNN) using PyTorch that can analyze images of people and categorize them into distinct states. Our system is able to analyze images in order to recognize four classes:
 
-The objective of this project is to develop a Deep Learning Convolutional Neural Network (CNN) using PyTorch that can analyze images of students in a classroom or online meeting setting and categorize them into distinct states or activities. Your system has to be able to analyze images in order to recognize four classes:
-
-1. Neutral: A student presenting neither active engagement nor disengagement, with relaxed facial features.
-2. Engaged/Focused: A student evidencing signs of active concentration, with sharp and attentive eyes.
-3. Bored/Tired: A student displaying signs of weariness or a lack of interest. This can be evidenced by droopy eyes or vacant stares.
-4. Angry/Irritated: Signs of agitation or displeasure, which might manifest as tightened facial muscles, a tight-lipped frown, or narrowed eyes.
+1. Neutral: An image presenting neither active engagement nor disengagement, with relaxed facial features.
+2. Focused: An image evidencing signs of active concentration, with sharp and attentive eyes.
+3. Tired: An image displaying signs of weariness or a lack of interest. This can be evidenced by droopy eyes or vacant stares.
+4. Angry: Signs of agitation or displeasure, which might manifest as tightened facial muscles, a tight-lipped frown, or narrowed eyes.
 
 The whole project is split across three parts, which build on each other to deliver the final, complete project.
 
-## Project Parts
 
-### Part 1: Data Collection, Cleaning, Labeling & Preliminary Analysis 
+### Project Parts
 
-In this part, you will develop suitable datasets that you will later need for training your system. This includes examining existing datasets, mapping them to your classes, performing some pre-processing, and basic analysis. More details about this part will be provided below.
+#### Part 1: Data Collection, Cleaning, Labeling & Preliminary Analysis 
 
-### Part 2: CNN Model Development and Basic Evaluation
+In this part, we developed suitable datasets that we will later need for training our model. This includes examining existing datasets, mapping them to our classes, performing some pre-processing, and basic analysis.
 
-After learning about CNNs and PyTorch, you will build basic CNN models suitable to detect the above classes. This includes deciding on the number of layers, the type of layers (convolutional, pooling, fully connected), and activation functions. You will have to apply basic evaluation metrics such as accuracy, confusion matrix, precision, recall, and F1-score.
+## Contents
 
-### Part 3: Bias Analysis, Model Refinement & Deep Evaluation
+- **Dataset Folder**: In the `Dataset` folder, you'll find essential resources related to our dataset:
 
-Addressing bias and refining models is advanced and crucial for AI’s ethical applications. You will use visualization tools and metrics to identify bias in your model towards particular classes. Here, you will have to consider demographic fairness to check for racial, age, or gender biases. You will then apply bias mitigation techniques to reduce bias, which can involve oversampling underrepresented classes, employing fairness constraints, or using techniques like adversarial debiasing. Additionally, you have to apply deeper evaluation techniques, in particular, k-fold cross-validation.
+1. **Dataset Download Links**: Due to the dataset's large size, we've made it available for download via Google Drive. Access the dataset [Here](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=drive_link).
+
+2. **Sample Images**: To offer a visual glimpse of the dataset, we've included ten sample images from each class. These samples are located in the `Sample_Images` subfolder
+
+- **Code Folder**: Outlines the purpose of code files, scripts, or notebooks used in the project.
+
+- **Results Folder**: Describes the content and purpose of files that contain the project's results, such as plots, tables, or outputs.
+
+- **Documentation Folder**: If applicable, specify where documentation files, reports, or presentations are located.
+
+## Data Cleaning
+
+### File: data_cleaning_script.py
+
+- Explain the purpose of the data cleaning script.
+- List dependencies or libraries required for data cleaning.
+- Provide clear steps to execute the data cleaning process.
+
+### Example:
+
+```bash
+python data_cleaning_script.py
+
 
