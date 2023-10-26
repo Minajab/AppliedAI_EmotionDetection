@@ -34,9 +34,8 @@ In this part, we developed suitable datasets that we will later need for trainin
 
 ## Data Cleaning
 
-### File: data_cleaning_script.py
-
-- Explain the purpose of the data cleaning script.
+1. `Clearance.py`: This file contains some preprocessing steps needed for...
+2. `Data cleaning phase.py`: This file ...
 - List dependencies or libraries required for data cleaning.
 - Provide clear steps to execute the data cleaning process.
 
