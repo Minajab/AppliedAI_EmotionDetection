@@ -5,7 +5,7 @@ import numpy as np
 from skimage import io
 import random
 
-
+#Extracts faces and removes backgrounds for 'bored' and 'focused' classes.
 def Deleting_background():
     for Class in ["Bored", "Focused"]:
         Files = os.listdir(Class)
@@ -27,7 +27,7 @@ def Deleting_background():
                 counter += 1
                 os.remove(Path)
 
-
+#Applies slight rotation to 'angry' and 'neutral' class images; other classes already augmented.
 def Rotation():
     min_rotation = -30.0
     max_rotation = 30.0
@@ -45,7 +45,7 @@ def Rotation():
                 rotated_image = cv2.warpAffine(image, rotation_matrix, (width, height), flags=cv2.INTER_LINEAR)
                 cv2.imwrite(Path, rotated_image)
 
-
+#Applied to 'focused' and 'bored' classes with a saturation factor of 1.5 for color enhancement.
 def Saturation_adjustment():
     for Class in ["Focused", "Bored"]:
         Files = os.listdir(Class)
@@ -61,7 +61,7 @@ def Saturation_adjustment():
                 Img_with_adjusted_saturation.close()
                 print("one saturation is done")
 
-
+#This function converts the images to grayscale.
 def Gray_scale():
     for Class in ["Angry", "Bored", "Focused", "Neutral"]:
         Files = os.listdir(Class)
@@ -73,7 +73,7 @@ def Gray_scale():
                 cv2.imwrite(Path, Gray_image)
                 print("gray")
 
-
+#Finds maximum image width and height, then sets all images to match this size using 'Resize_image'.
 def Size_determination():
     Classes = ["Angry", "Bored", "Focused", "Neutral"]
     Max_width = 0
@@ -89,7 +89,7 @@ def Size_determination():
                 Max_height = Height
     return [Max_width, Max_height]
 
-
+#Adjusts the contrast with an intensity factor of 1.1 after converting the images to grayscale.
 def Contrast_regulation():
     for Class in ["Angry", "Bored", "Focused", "Neutral"]:
         Files = os.listdir(Class)
@@ -117,7 +117,7 @@ def Resize_image(Target_width, Target_height):
             sharpened_image.save(Path)
             print("resized")
 
-
+#Applies fastNlMeansDenoising algorithm to remove noise and preserve image details using similar patches.
 def Denoise():
     for Class in ["Angry", "Bored", "Focused", "Neutral"]:
         Files = os.listdir(Class)
@@ -128,7 +128,7 @@ def Denoise():
             cv2.imwrite(Path, Dst)
             print("denoise")
 
-
+#This function applies a two-step blurring process: bilateral filter for edge-preserving smoothing, followed by a 3x3 Gaussian blur for further refinement.
 def Deblock():
     for Class in ["Angry", "Bored", "Focused", "Neutral"]:
         Files = os.listdir(Class)
@@ -141,7 +141,7 @@ def Deblock():
             cv2.imwrite(Path, Blurred_image)
             print("deblocked")
 
-
+#Mediating the impact of block artifacts through a chain of erosion and dilation.
 def morphology():
     for Class in ["Angry", "Bored", "Focused", "Neutral"]:
         Files = os.listdir(Class)
@@ -156,7 +156,7 @@ def morphology():
             eroded_image = cv2.erode(dilated_image, erosion_kernel, iterations=1)
             cv2.imwrite(Path, eroded_image)
 
-
+#The main function calls all processing functions in a specific order.
 def main():
     Input_directory = "C:\\Users\\mahshad\\Desktop\\AI\\Data\\"
     os.chdir(Input_directory)
