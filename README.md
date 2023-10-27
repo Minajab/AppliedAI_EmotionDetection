@@ -28,7 +28,7 @@ It contains essential resources related to our dataset:
 2. **dataset.pdf File**: We provided some information about the raw datasets we used (including the source of each dataset). The file also contains 10 samples of each class. The is located in the Dataset folder.
 
 
-The raw dataset should be downloaded from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and placed inside the Dataset directory. Alternatively, the cleaned and preprocessed dataset can be downloaded from [[https://drive.google.com/file/d/14MvCEBK-_dkIoo2P6YkbLfdVIoSBEfht/view?usp=drive_link](https://drive.google.com/file/d/1vs_3zNQ_ZaeZeA0udOAZJsVgBjK4YfPY/view?usp=sharing)]([https://drive.google.com/file/d/14MvCEBK-_dkIoo2P6YkbLfdVIoSBEfht/view?usp=drive_link](https://drive.google.com/file/d/1vs_3zNQ_ZaeZeA0udOAZJsVgBjK4YfPY/view?usp=sharing)) and placed inside the Dataset directory.
+The raw dataset should be downloaded from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and placed inside the Dataset directory. Alternatively, the cleaned and preprocessed dataset can be downloaded from [https://drive.google.com/file/d/1vs_3zNQ_ZaeZeA0udOAZJsVgBjK4YfPY/view?usp=sharing](https://drive.google.com/file/d/1vs_3zNQ_ZaeZeA0udOAZJsVgBjK4YfPY/view?usp=sharing) and placed inside the Dataset directory.
 
 ### Python_Code
 This folder contains two important files:
