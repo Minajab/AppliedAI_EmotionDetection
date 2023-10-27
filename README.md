@@ -74,15 +74,9 @@ This part is integral for understanding our dataset's structure:
 - **Sample Image Display** : View random images from each class, offering a quick snapshot of our dataset.
 - **Pixel Intensity Distribution** : Understand pixel intensity spread, aiding in recognizing variations in image brightness and contrast.
 
-For effective visualizations, refer to the following scripts:
-
-`class_distribution.py`: Generates a bar chart for emotion class distribution.
-`display_sample_images.py`: Displays sample images from each class.
-`pixel_intensity_distribution.py`: Analyzes and displays pixel intensity distribution.
-
 **Visualization Results**
 
-After executing the above scripts, you'll obtain:
+After executing the scripts, you'll obtain:
 
 **Bar Chart** : Representing the number of images in each class, aiding in identifying if data augmentation or oversampling is needed.
 
