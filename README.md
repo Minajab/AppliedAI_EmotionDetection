@@ -50,7 +50,6 @@ In this part, we developed suitable datasets that we will later need for trainin
     4. There are two lines that require manual changes. First, in the main function, modify the "input_directory" to point to the data folder, which contains four subfolders with images representing four emotional classes. Second, in the "deleting_background" function, update the directory of the CascadeClassifier to the directory of the file "haarcascade_frontalface_alt.xml."
 
     5. Ultimately, the data file will contain the cleared data, as the processed and cleaned images have been overwritten in their original directories.  
-- List dependencies or libraries required for data cleaning.
 
 ## Visualization
 
