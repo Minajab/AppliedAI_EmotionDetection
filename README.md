@@ -13,6 +13,8 @@ The whole project is split across three parts, which build on each other to deli
 
 To be able to run the project, first use `python -m venv venv` to create a virtual environment called venv. Then use `source venv/bin/activate` to activate the virtual environment. Finally, use `pip install -r requirements.txt` to install all needed python packages.
 
+__Note:__ The commands provided work with Linux and Mac operating systems. For Windows, please refer to the Python documentation page, especially [https://docs.python.org/3/library/venv.html](https://docs.python.org/3/library/venv.html).
+
 ### Project Parts
 
 #### Part 1: Data Collection, Cleaning, Labeling & Preliminary Analysis 
@@ -45,30 +47,29 @@ This folder includes the following files:
 - **Expectations-Originality-Form.pdf**
 
 
-## Data cleaning and processing
+### Data cleaning and processing
 
-  ## List of dependencies
-  
-    1. matplotlib
-    2. Pillow
-    3. opencv-python
-    4. numpy
-    5. scikit-image 
+## List of dependencies
+
+1. matplotlib
+2. Pillow
+3. opencv-python
+4. numpy
+5. scikit-image 
     
 
-  ## Follow below steps for cleaning and processing your images:
-    1. Download the project's ZIP file and unzip it. Then, open your command prompt (CMD) and navigate to the project directory.
-    2. Use `python -m venv venv` to create a virtual environment called venv.
-    3. If you are using macOS or Linux, use the command source venv/bin/activate to activate the virtual environment. However, if you are on Windows,         navigate to the 'Scripts' directory within the virtual environment and execute the command 'activate'.  
-    4. Use `pip install -r requirements.txt` to install all needed Python packages.
-    5. Download the original data from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing]                  
-    (https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and please place four folders containing emotional classes         into the 'Dataset' directory. This 'Dataset' directory will serve as the input for the clearance code.
-    6. Change directory to Python_Code. Run `python Clearance.py`. You'll notice that the main function calls all other processing and cleaning functions 
-    in a specific order.
-    7. Ultimately, the Dataset diretory will contain the cleaned and preprocessed data, as the processed and cleaned images have been overwritten in 
-    their original directories. 
+## Follow below steps for cleaning and processing your images:
+1. Download the project's ZIP file and unzip it. Then, open your command prompt (CMD) and navigate to the project directory.
+2. Use `python -m venv venv` to create a virtual environment called venv. For more information about Python virtual environments, please refer to [https://docs.python.org/3/library/venv.html](https://docs.python.org/3/library/venv.html).
+3. If you are using macOS or Linux, use the command source venv/bin/activate to activate the virtual environment. However, if you are on Windows, navigate to the 'Scripts' directory within the virtual environment and execute the command 'activate'.  
+4. Use `pip install -r requirements.txt` to install all needed Python packages.
+5. Download the original data from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and please place four folders containing emotional classes into the 'Dataset' directory. This 'Dataset' directory will serve as the input for the clearance code.
+6. Change directory to Python_Code. Run `python Clearance.py`. You'll notice that the main function calls all other processing and cleaning functions in a specific order.
+7. Ultimately, the Dataset diretory will contain the cleaned and preprocessed data, as the processed and cleaned images have been overwritten in their original directories. 
 
-## Visualization
+__Note:__ Please inspect the data directory and subdirectories and remove any `.DS_Store` files that you find. These files are automatically created by the operating system, especially the Mac operating system. They are hidden, so you would need to remove them using a terminal. These files will cause an error while running the preprocessing files. For more information about `.DS_Store` please refer to [https://buildthis.com/ds_store-files-and-why-you-should-know-about-them/](https://buildthis.com/ds_store-files-and-why-you-should-know-about-them/).
+
+### Visualization
 
 In the realm of our Facial Emotion Recognition project, understanding and visualizing the dataset is of paramount importance. The visualization segment seeks to provide insights into the distribution, representation, and nature of our image dataset.
 This part is integral for understanding our dataset's structure:
