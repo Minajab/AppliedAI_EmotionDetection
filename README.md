@@ -28,9 +28,7 @@ It contains essential resources related to our dataset:
 2. **dataset.pdf File**: We provided some information about the raw datasets we used (including the source of each dataset). The file also contains 10 samples of each class. The is located in the Dataset folder.
 
 
-The raw dataset should be downloaded from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and placed inside the Raw_Data directory.
-
-The preprocessed dataset can be downloaded from [https://drive.google.com/file/d/14MvCEBK-_dkIoo2P6YkbLfdVIoSBEfht/view?usp=drive_link](https://drive.google.com/file/d/14MvCEBK-_dkIoo2P6YkbLfdVIoSBEfht/view?usp=drive_link) and placed inside the Dataset directory.
+The raw dataset should be downloaded from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and placed inside the Dataset directory. Alternatively, the cleaned and preprocessed dataset can be downloaded from [https://drive.google.com/file/d/14MvCEBK-_dkIoo2P6YkbLfdVIoSBEfht/view?usp=drive_link](https://drive.google.com/file/d/14MvCEBK-_dkIoo2P6YkbLfdVIoSBEfht/view?usp=drive_link) and placed inside the Dataset directory.
 
 ### Python_Code
 This folder contains two important files:
@@ -62,10 +60,10 @@ This folder includes the following files:
     1. Use `python -m venv venv` to create a virtual environment called venv.
     2. Use `source venv/bin/activate` to activate the virtual environment. 
     3. Use `pip install -r requirements.txt` to install all needed Python packages.
-    4. Download the original data from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and place it in the Raw_Data directory. It serves as input for the clearance code.
+    4. Download the original data from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and place it in the Dataset directory. It serves as input for the clearance code.
     5. Change directory to Python_Code. Run `python Clearance.py`. You'll notice that the main function calls all other processing and cleaning functions in a   
     specific order.
-    6. Ultimately, the Dataset directory will contain the cleaned and preprocessed dataset.  
+    6. Ultimately, the Dataset diretory will contain the cleaned and preprocessed data, as the processed and cleaned images have been overwritten in their original directories. 
 
 ## Visualization
 

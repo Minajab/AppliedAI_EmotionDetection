@@ -7,7 +7,7 @@ import random
 
 #Extracts faces and removes backgrounds for 'tired' and 'focused' classes.
 def Deleting_background():
-    for Class in ["Bored", "Focused"]:
+    for Class in ["Tired", "Focused"]:
         Files = os.listdir(Class)
         for File in Files:
             Path = os.path.join(Class, File)
@@ -47,9 +47,9 @@ def Rotation():
                 rotated_image = cv2.warpAffine(image, rotation_matrix, (width, height), flags=cv2.INTER_LINEAR)
                 cv2.imwrite(Path, rotated_image)
 
-#Applied to 'focused' and 'bored' classes with a saturation factor of 1.5 for color enhancement.
+#Applied to 'focused' and 'tired' classes with a saturation factor of 1.5 for color enhancement.
 def Saturation_adjustment():
-    for Class in ["Focused", "Bored"]:
+    for Class in ["Focused", "Tired"]:
         Files = os.listdir(Class)
         for File in Files:
             Path = os.path.join(Class, File)
@@ -65,7 +65,7 @@ def Saturation_adjustment():
 
 #This function converts the images to grayscale.
 def Gray_scale():
-    for Class in ["Angry", "Bored", "Focused", "Neutral"]:
+    for Class in ["Angry", "Tired", "Focused", "Neutral"]:
         Files = os.listdir(Class)
         for File in Files:
             Path = os.path.join(Class, File)
@@ -77,7 +77,7 @@ def Gray_scale():
 
 #Finds maximum image width and height, then sets all images to match this size using 'Resize_image'.
 def Size_determination():
-    Classes = ["Angry", "Bored", "Focused", "Neutral"]
+    Classes = ["Angry", "Tired", "Focused", "Neutral"]
     Max_width = 0
     Max_height = 0
     for Class in Classes:
@@ -93,7 +93,7 @@ def Size_determination():
 
 #Adjusts the contrast with an intensity factor of 1.1 after converting the images to grayscale.
 def Contrast_regulation():
-    for Class in ["Angry", "Bored", "Focused", "Neutral"]:
+    for Class in ["Angry", "Tired", "Focused", "Neutral"]:
         Files = os.listdir(Class)
         for File in Files:
             Path = os.path.join(Class, File)
@@ -108,7 +108,7 @@ def Contrast_regulation():
 
 
 def Resize_image(Target_width, Target_height):
-    for Class in ["Angry", "Bored", "Focused", "Neutral"]:
+    for Class in ["Angry", "Tired", "Focused", "Neutral"]:
         print("class")
         Files = os.listdir(Class)
         for File in Files:
@@ -121,7 +121,7 @@ def Resize_image(Target_width, Target_height):
 
 #Applies fastNlMeansDenoising algorithm to remove noise and preserve image details using similar patches.
 def Denoise():
-    for Class in ["Angry", "Bored", "Focused", "Neutral"]:
+    for Class in ["Angry", "Tired", "Focused", "Neutral"]:
         Files = os.listdir(Class)
         for File in Files:
             Path = os.path.join(Class, File)
@@ -132,7 +132,7 @@ def Denoise():
 
 #This function applies a two-step blurring process: bilateral filter for edge-preserving smoothing, followed by a 3x3 Gaussian blur for further refinement.
 def Deblock():
-    for Class in ["Angry", "Bored", "Focused", "Neutral"]:
+    for Class in ["Angry", "Tired", "Focused", "Neutral"]:
         Files = os.listdir(Class)
         print(Class)
         for File in Files:
@@ -145,7 +145,7 @@ def Deblock():
 
 #Mediating the impact of block artifacts through a chain of erosion and dilation.
 def morphology():
-    for Class in ["Angry", "Bored", "Focused", "Neutral"]:
+    for Class in ["Angry", "Tired", "Focused", "Neutral"]:
         Files = os.listdir(Class)
         for File in Files:
             Path = os.path.join(Class, File)
@@ -162,7 +162,7 @@ def morphology():
 def main():
     #Provide the input directory that points to the folder containing subfolders for images of people expressing different emotions.
     Input_directory = os.path.abspath(
-                os.path.join(os.path.dirname(__file__), '..', 'Raw_Data'))
+                os.path.join(os.path.dirname(__file__), '..', 'Dataset'))
     os.chdir(Input_directory)
     Deleting_background()
     Rotation()

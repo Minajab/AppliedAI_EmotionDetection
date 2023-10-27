@@ -67,6 +67,7 @@ def sample_imgs(d, s=(128, 128)):
             a.axis('off')
     plt.tight_layout()
     plt.show()
+    return imgs
 
 def pixel_dist(img_list):
     """
