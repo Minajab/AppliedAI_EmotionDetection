@@ -57,7 +57,7 @@ This folder includes the following files:
     
 
   ## Follow below steps for cleaning and processing your images:
-    1. Download the zip file of the project and unzip it. Afterwards, open your cmd and moveo the directory of the project.
+    1. Download the project's ZIP file and unzip it. Then, open your command prompt (CMD) and navigate to the project directory.
     2. Use `python -m venv venv` to create a virtual environment called venv.
     3. If you are using macOS or Linux, use the command source venv/bin/activate to activate the virtual environment. However, if you are on Windows,         navigate to the 'Scripts' directory within the virtual environment and execute the command 'activate'.  
     4. Use `pip install -r requirements.txt` to install all needed Python packages.
