@@ -32,10 +32,24 @@ In this part, we developed suitable datasets that we will later need for trainin
 
 - **Documentation Folder**: If applicable, specify where documentation files, reports, or presentations are located.
 
-## Data Cleaning
+## Data cleaning and processing
 
-1. `Clearance.py`: This file contains some preprocessing steps needed for...
-2. `Data cleaning phase.py`: This file ...
+## List of dependencies
+  1. os
+  2. PIL 
+  3. cv2
+  4. numpy
+  5. skimage 
+  6. random
+
+## Follow below steps for cleaning and processing your images:
+  1. Download the original data from the dataset folder. It serves as input for the clearance code.
+  2. Download the "haarcascade_frontalface_alt.xml" file, which can be found in the dependencies folder.
+  3. Find "clearance.py" file in the code folder. You'll notice that the main function calls all other processing and cleaning functions in a specific order.
+
+  4. There are two lines that require manual changes. First, in the main function, modify the "input_directory" to point to the data folder, which contains four subfolders with images representing four emotional classes. Second, in the "deleting_background" function, update the directory of the CascadeClassifier to the directory of the file "haarcascade_frontalface_alt.xml."
+
+  5. Ultimately, the data file will contain the cleared data, as the processed and cleaned images have been overwritten in their original directories.  
 - List dependencies or libraries required for data cleaning.
 - Provide clear steps to execute the data cleaning process.
 
