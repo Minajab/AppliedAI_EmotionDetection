@@ -20,7 +20,7 @@ In this part, we developed suitable datasets that we will later need for trainin
 
 ## Contents
 
-- `Dataset`: In the `Dataset` included essential resources related to our dataset:
+- `Dataset`: It is contains essential resources related to our dataset:
 
 1. **Dataset Download Links**: Due to the dataset's large size, we've made it available for download via Google Drive.
 
