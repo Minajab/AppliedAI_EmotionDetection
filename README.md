@@ -20,17 +20,24 @@ In this part, we developed suitable datasets that we will later need for trainin
 
 ## Contents
 
-- **Dataset Folder**: In the `Dataset` folder, you'll find essential resources related to our dataset:
+- `Dataset`: In the `Dataset` included essential resources related to our dataset:
 
-1. **Dataset Download Links**: Due to the dataset's large size, we've made it available for download via Google Drive. Access the dataset [Here](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=drive_link).
+1. **Dataset Download Links**: Due to the dataset's large size, we've made it available for download via Google Drive.
 
-2. **Sample Images**: To offer a visual glimpse of the dataset, we've included ten sample images from each class. These samples are located in the `Sample_Images` subfolder
+2. **Sample Images**: To offer a visual glimpse of the dataset, we've included ten sample images from each class. These samples are located in the `Dataset` subfolder
 
-- **Code Folder**: Outlines the purpose of code files, scripts, or notebooks used in the project.
+- `Python_Code`: This folder contains two important files:
 
-- **Results Folder**: Describes the content and purpose of files that contain the project's results, such as plots, tables, or outputs.
+1. **Clearance.py**: This file is responsible for cleaning and preprocessing the dataset.
 
-- **Documentation Folder**: If applicable, specify where documentation files, reports, or presentations are located.
+2. **visualization.py**: This file is used for data visualization tasks.
+
+- `Documentation`: This folder includes the following files:
+
+- **Report.pdf**: This is the main report document containing the project's findings, methodology, and results.
+
+- **Expectations-Originality-Form.pdf**
+
 
 ## Data cleaning and processing
 
