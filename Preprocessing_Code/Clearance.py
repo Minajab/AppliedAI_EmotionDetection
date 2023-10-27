@@ -5,7 +5,7 @@ import numpy as np
 from skimage import io
 import random
 
-#Extracts faces and removes backgrounds for 'bored' and 'focused' classes.
+#Extracts faces and removes backgrounds for 'tired' and 'focused' classes.
 def Deleting_background():
     for Class in ["Bored", "Focused"]:
         Files = os.listdir(Class)
