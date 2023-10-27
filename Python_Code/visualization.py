@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 
+
 def load_img(p, s=(128, 128)):
     """
     Load an image from a path, convert it to grayscale, and resize it.
