@@ -59,14 +59,13 @@ This folder includes the following files:
     
 
   ## Follow below steps for cleaning and processing your images:
-    1. Download the original data from the dataset folder. It serves as input for the clearance code.
-    2. Download the "haarcascade_frontalface_alt.xml" file, which can be found in the dependencies folder.
-    3. Find "clearance.py" file in the preprocessing_code folder. You'll notice that the main function calls all other processing and cleaning functions in a   
+    1. Use `python -m venv venv` to create a virtual environment called venv.
+    2. Use `source venv/bin/activate` to activate the virtual environment. 
+    3. Use `pip install -r requirements.txt` to install all needed Python packages.
+    4. Download the original data from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and place it in the Raw_Data directory. It serves as input for the clearance code.
+    5. Change directory to Python_Code. Run `python Clearance.py`. You'll notice that the main function calls all other processing and cleaning functions in a   
     specific order.
-    4. There are two lines that require manual changes. First, in the main function, modify the "input_directory" to point to the data folder, which contains four 
-    subfolders with images representing four emotional classes. Second, in the "deleting_background" function, update the directory of the CascadeClassifier to 
-    the directory of the file "haarcascade_frontalface_alt.xml."
-    5. Ultimately, the data file will contain the cleared data, as the processed and cleaned images have been overwritten in their original directories.  
+    6. Ultimately, the Dataset directory will contain the cleaned and preprocessed dataset.  
 
 ## Visualization
 
