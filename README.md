@@ -53,7 +53,7 @@ In this part, we developed suitable datasets that we will later need for trainin
 
 ## Visualization
 
-
+In the realm of our Facial Emotion Recognition project, understanding and visualizing the dataset is of paramount importance. The visualization segment seeks to provide insights into the distribution, representation, and nature of our image dataset.
 This part is integral for understanding our dataset's structure:
 
 - **Class Distribution Visualization**: A graphical representation to visualize the number of images within each emotion category.
@@ -65,30 +65,6 @@ For effective visualizations, refer to the following scripts:
 `class_distribution.py`: Generates a bar chart for emotion class distribution.
 `display_sample_images.py`: Displays sample images from each class.
 `pixel_intensity_distribution.py`: Analyzes and displays pixel intensity distribution.
-
-
-Facial Emotion Recognition: Data Visualization
-Overview
-In the realm of our Facial Emotion Recognition project, understanding and visualizing the dataset is of paramount importance. The visualization segment seeks to provide insights into the distribution, representation, and nature of our image dataset.
-
-Visualization Objectives
-Class Distribution Visualization: To understand the balance or imbalance between different emotional classes in the dataset.
-Sample Image Display: Showcase random images from each class, providing a snapshot of dataset variety.
-Pixel Intensity Distribution: Dive into the intricacies of pixel values to recognize variations in brightness and contrast across images, which can be pivotal in preprocessing steps.
-Visualization Scripts
-class_distribution.py: This script generates a bar chart showcasing the distribution of images across the various emotion classes.
-
-display_sample_images.py: A handy script to pull and display random sample images from each emotion class.
-
-pixel_intensity_distribution.py: Analyzes the pixel intensity spread across the dataset and visualizes it, assisting in decisions related to normalization or other preprocessing techniques.
-
-To run these scripts, utilize the following commands:
-
-bash
-Copy code
-python class_distribution.py
-python display_sample_images.py
-python pixel_intensity_distribution.py
 
 **Visualization Results**
 
