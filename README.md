@@ -35,12 +35,14 @@ In this part, we developed suitable datasets that we will later need for trainin
 ## Data cleaning and processing
 
   ## List of dependencies
-    1. os
-    2. PIL 
+  
+    1. matplotlib
+    2. Pillow
     3. cv2
     4. numpy
     5. skimage 
     6. random
+    
 
   ## Follow below steps for cleaning and processing your images:
     1. Download the original data from the dataset folder. It serves as input for the clearance code.
