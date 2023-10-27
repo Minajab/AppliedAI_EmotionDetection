@@ -11,6 +11,7 @@ The objective of this project is to develop a Deep Learning Convolutional Neural
 
 The whole project is split across three parts, which build on each other to deliver the final, complete project.
 
+To be able to run the project, first use `python -m venv venv` to create a virtual environment called venv. Then use `source venv/bin/activate` to activate the virtual environment. Finally, use `pip install -r requirements.txt` to install all needed python packages.
 
 ### Project Parts
 
@@ -20,19 +21,26 @@ In this part, we developed suitable datasets that we will later need for trainin
 
 ## Contents
 
-- `Dataset`: It is contains essential resources related to our dataset:
+### Dataset
+It contains essential resources related to our dataset:
 
-1. **Dataset Download Links**: Due to the dataset's large size, we've made it available for download via Google Drive.
+1. **Dataset Download Links**: Due to the dataset's large size, we've made it available for download via Google Drive. The links are provided in `Dataset.md`.
+2. **dataset.pdf File**: We provided some information about the raw datasets we used (including the source of each dataset). The file also contains 10 samples of each class. The is located in the Dataset folder.
 
-2. **Sample Images**: To offer a visual glimpse of the dataset, we've included ten sample images from each class. These samples are located in the `Dataset` subfolder
 
-- `Python_Code`: This folder contains two important files:
+The raw dataset should be downloaded from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and placed inside the Raw_Data directory.
+
+The preprocessed dataset can be downloaded from [https://drive.google.com/file/d/14MvCEBK-_dkIoo2P6YkbLfdVIoSBEfht/view?usp=drive_link](https://drive.google.com/file/d/14MvCEBK-_dkIoo2P6YkbLfdVIoSBEfht/view?usp=drive_link) and placed inside the Dataset directory.
+
+### Python_Code
+This folder contains two important files:
 
 1. **Clearance.py**: This file is responsible for cleaning and preprocessing the dataset.
 
 2. **visualization.py**: This file is used for data visualization tasks.
 
-- `Documentation`: This folder includes the following files:
+### Documentation
+This folder includes the following files:
 
 - **Report.pdf**: This is the main report document containing the project's findings, methodology, and results.
 
@@ -45,10 +53,9 @@ In this part, we developed suitable datasets that we will later need for trainin
   
     1. matplotlib
     2. Pillow
-    3. cv2
+    3. opencv-python
     4. numpy
-    5. skimage 
-    6. random
+    5. scikit-image 
     
 
   ## Follow below steps for cleaning and processing your images:
