@@ -57,13 +57,16 @@ This folder includes the following files:
     
 
   ## Follow below steps for cleaning and processing your images:
-    1. Use `python -m venv venv` to create a virtual environment called venv.
-    2. Use `source venv/bin/activate` to activate the virtual environment. 
-    3. Use `pip install -r requirements.txt` to install all needed Python packages.
-    4. Download the original data from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and place it in the Dataset directory. It serves as input for the clearance code.
-    5. Change directory to Python_Code. Run `python Clearance.py`. You'll notice that the main function calls all other processing and cleaning functions in a   
-    specific order.
-    6. Ultimately, the Dataset diretory will contain the cleaned and preprocessed data, as the processed and cleaned images have been overwritten in their original directories. 
+    1. Download the zip file of the project and unzip it. Afterwards, open your cmd and moveo the directory of the project.
+    2. Use `python -m venv venv` to create a virtual environment called venv.
+    3. If you are using macOS or Linux, use the command source venv/bin/activate to activate the virtual environment. However, if you are on Windows,         navigate to the 'Scripts' directory within the virtual environment and execute the command 'activate'.  
+    4. Use `pip install -r requirements.txt` to install all needed Python packages.
+    5. Download the original data from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing]                  
+    (https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and please place four folders containing emotional classes         into the 'Dataset' directory. This 'Dataset' directory will serve as the input for the clearance code.
+    6. Change directory to Python_Code. Run `python Clearance.py`. You'll notice that the main function calls all other processing and cleaning functions 
+    in a specific order.
+    7. Ultimately, the Dataset diretory will contain the cleaned and preprocessed data, as the processed and cleaned images have been overwritten in 
+    their original directories. 
 
 ## Visualization
 
