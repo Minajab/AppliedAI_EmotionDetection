@@ -80,8 +80,7 @@ def pixel_dist(img_list):
     plt.show()
 
 if __name__ == "__main__":
-    
-    dir_path = "E:\\University\\pythonProject1\\AppliedAI_EmotionDetection\\Dataset\\"
+    dir_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Dataset'))
     class_dist(dir_path)
     imgs = sample_imgs(dir_path)
     pixel_dist(imgs)

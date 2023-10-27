@@ -13,7 +13,9 @@ def Deleting_background():
             Path = os.path.join(Class, File)
             img = cv2.imread(Path)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            face_cascade = cv2.CascadeClassifier('C:\\Users\\mahshad\\Desktop\\haarcascade_frontalface_alt.xml')
+            dir_path = os.path.abspath(
+                os.path.join(os.path.dirname(__file__), '..', 'Dependencies', 'haarcascade_frontalface_alt.xml'))
+            face_cascade = cv2.CascadeClassifier(dir_path)
             faces = face_cascade.detectMultiScale(gray, 1.3, 4)
             print('Number of detected faces:', len(faces))
             counter = 0
@@ -159,7 +161,8 @@ def morphology():
 #The main function calls all processing functions in a specific order.
 def main():
     #Provide the input directory that points to the folder containing subfolders for images of people expressing different emotions.
-    Input_directory = "C:\\Users\\mahshad\\Desktop\\AI\\Data\\"
+    Input_directory = os.path.abspath(
+                os.path.join(os.path.dirname(__file__), '..', 'Raw_Data'))
     os.chdir(Input_directory)
     Deleting_background()
     Rotation()
