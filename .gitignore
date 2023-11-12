@@ -1,5 +1,6 @@
 .idea/
 venv/
+saved_models/
 .flaskenv
 __pycache__/
 .DS_Store

@@ -10,6 +10,7 @@ import math
 import argparse
 from tqdm import tqdm
 import numpy as np
+from sklearn.model_selection import train_test_split
 
 
 def conv_output_size(input_size, kernel_size, stride=1, padding=0):
@@ -28,26 +29,49 @@ class EmotionCNN(nn.Module):
         self.num_classes = num_classes
 
         # Define convolutional layers
-        self.conv1 = nn.Conv2d(1, 32, kernel_size=3)
+        self.conv1 = nn.Conv2d(1, 64, kernel_size=3)
+        self.batch_norm1 = nn.BatchNorm2d(64)
+        self.dropout1 = nn.Dropout2d(p=0.5)
         conv_output_width = conv_output_size(width, kernel_size)
         conv_output_width = maxpool_output_size(conv_output_width, pooling_kernel, stride=pooling_kernel)
         conv_output_height = conv_output_size(height, kernel_size)
         conv_output_height = maxpool_output_size(conv_output_height, pooling_kernel, stride=pooling_kernel)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=3)
+        self.conv2 = nn.Conv2d(64, 128, kernel_size=3)
+        self.batch_norm2 = nn.BatchNorm2d(128)
+        self.dropout2 = nn.Dropout2d(p=0.5)
         conv_output_width = conv_output_size(conv_output_width, kernel_size)
         conv_output_width = maxpool_output_size(conv_output_width, pooling_kernel, stride=pooling_kernel)
         conv_output_height = conv_output_size(conv_output_height, kernel_size)
         conv_output_height = maxpool_output_size(conv_output_height, pooling_kernel, stride=pooling_kernel)
 
-        self.fc1 = nn.Linear(64 * conv_output_width * conv_output_height, 128)
-        self.fc2 = nn.Linear(128, num_classes)
+        # Fully Connected Layers
+        self.fc1 = nn.Linear(128 * conv_output_width * conv_output_height, 256)
+        self.batch_norm_fc1 = nn.BatchNorm1d(256)
+        self.dropout_fc1 = nn.Dropout(0.5)
+
+        self.fc2 = nn.Linear(256, 128)
+        self.batch_norm_fc2 = nn.BatchNorm1d(128)
+        self.dropout_fc2 = nn.Dropout(0.5)
+
+        # Output layer
+        self.fc_out = nn.Linear(128, num_classes)
 
     def forward(self, x):
-        x = F.relu(F.max_pool2d(self.conv1(x), self.pooling_kernel))
-        x = F.relu(F.max_pool2d(self.conv2(x), self.pooling_kernel))
+        # Convolution Layers
+        x = F.max_pool2d(F.relu(self.batch_norm1(self.conv1(x))), self.pooling_kernel)
+        x = self.dropout1(x)
+        x = F.max_pool2d(F.relu(self.batch_norm2(self.conv2(x))), self.pooling_kernel)
+        x = self.dropout2(x)
+
+        # Flatten
         x = x.view(x.size(0), -1)
-        x = F.relu(self.fc1(x))
-        x = self.fc2(x)
+
+        # Fully Connected Layers
+        x = self.dropout_fc1(F.relu(self.batch_norm_fc1(self.fc1(x))))
+        x = self.dropout_fc2(F.relu(self.batch_norm_fc2(self.fc2(x))))
+
+        # Output layer
+        x = self.fc_out(x)
         return x
 
 
@@ -66,6 +90,8 @@ def train(model, train_loader, criterion, optimizer, num_epochs):
 
 
 def main(args):
+    # Setting Manual Seed for Reproducibility
+    torch.manual_seed(32)
     # Configuration parameters
     num_classes = 4
     learning_rate = 0.001
@@ -79,16 +105,38 @@ def main(args):
     # Define transformations for image data
     transform = transforms.Compose([
         transforms.Grayscale(num_output_channels=1),
-        transforms.Resize((32, 32)),
         transforms.ToTensor()
     ])
 
-    # Create a DataLoader for your dataset
-    print('Splitting the Dataset...')
     dataset = datasets.ImageFolder(root=Input_directory, transform=transform)
-    random_generator = torch.Generator().manual_seed(42)
-    train_dataset, validation_dataset, test_dataset = random_split(dataset, [0.7, 0.15, 0.15],
-                                                                   generator=random_generator)
+
+    # (Un)Comment the next SIX lines (use to test code on a smaller sample of the dataset)
+    # print('Sampling the Dataset...')
+    # number_of_images = len(dataset)
+    # indices = list(range(number_of_images))
+    # labels = [dataset[i][1] for i in range(number_of_images)]
+    # _, dataset_indices = train_test_split(indices, test_size=0.4, stratify=labels, random_state=42)
+    # dataset = torch.utils.data.Subset(dataset, dataset_indices)
+
+    number_of_images = len(dataset)
+    # Get the indices of the original dataset
+    indices = list(range(number_of_images))
+    # Get the labels of the dataset
+    labels = [dataset[i][1] for i in range(number_of_images)]
+
+    print('Splitting the Dataset...')
+    # Use train_test_split to split the dataset into train, validation, and test sets
+    train_indices, test_val_idx = train_test_split(indices, test_size=0.3, stratify=labels, random_state=42)
+    val_indices, test_indices = train_test_split(test_val_idx, test_size=0.5,
+                                                 stratify=[labels[i] for i in test_val_idx],
+                                                 random_state=42)
+
+    # Define datasets and data loaders
+    train_dataset = torch.utils.data.Subset(dataset, train_indices)
+    validation_dataset = torch.utils.data.Subset(dataset, val_indices)
+    test_dataset = torch.utils.data.Subset(dataset, test_indices)
+
+    # Create a DataLoader for your dataset
     print('Creating Train DataLoader...')
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     print('Creating Test DataLoader...')
@@ -116,6 +164,10 @@ def main(args):
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     print(f'Device: {device}')
+    print(f'Total Number of Images: {len(dataset)}')
+    print(f'Total Number of Training Images: {len(train_dataset)}')
+    print(f'Total Number of Validation Images: {len(validation_dataset)}')
+    print(f'Total Number of Testing Images: {len(test_dataset)}')
     print(f'Batch Size: {batch_size}')
     print(f'Number of Epochs: {num_epochs}')
     print(f'Number of Classes: {num_classes}')
@@ -126,7 +178,7 @@ def main(args):
     print('Training...')
     best_validation_error = np.inf
     with tqdm(range(num_epochs), unit='epoch') as tepoch:
-        for epoch in range(num_epochs):
+        for epoch in tepoch:
             tepoch.set_description(f'Epoch {epoch}')
             model.train()
             running_loss = 0.0
@@ -158,18 +210,29 @@ def main(args):
                 'Validation Loss': val_loss / val_total_data,
             }
             tepoch.set_postfix(ordered_dict=postfix)
-            if (val_loss/val_total_data)<best_validation_error:
-                best_validation_error = val_loss/val_total_data
+            if (val_loss / val_total_data) < best_validation_error:
+                best_validation_error = val_loss / val_total_data
                 model_path = os.path.abspath(
                     os.path.join(os.path.dirname(__file__), '..'))
-                if not os.path.exist(os.path.join(model_path, 'saved_models')):
+                if not os.path.exists(os.path.join(model_path, 'saved_models')):
                     os.mkdir(os.path.join(model_path, 'saved_models'))
-                model_path = os.path.join(model_path,'saved_models')
+                model_path = os.path.join(model_path, 'saved_models')
                 model_name = f'best_model_kernel_{conv_kernel_size}_pooling_kernel_{pooling_kernel_size}'
-                torch.save(model.state_dict(), os.path.join(model_path,f'{model_name}.pth'))
+                torch.save(model.state_dict(), os.path.join(model_path, f'{model_name}.pth'))
 
     print('Training has been Concluded...')
-    print('Testing...')
+
+    # Save the trained model to a file
+    print('Saving the Trained Model...')
+    model_path = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), '..'))
+    if not os.path.exists(os.path.join(model_path, 'saved_models')):
+        os.mkdir(os.path.join(model_path, 'saved_models'))
+    model_path = os.path.join(model_path, 'saved_models')
+    model_name = f'final_model_kernel_{conv_kernel_size}_pooling_kernel_{pooling_kernel_size}'
+    torch.save(model.state_dict(), os.path.join(model_path, f'{model_name}.pth'))
+
+    print('Testing Using the Final Model...')
     # Test the trained model
     model.eval()
     correct = 0
@@ -183,17 +246,25 @@ def main(args):
             correct += (predicted == target).sum().item()
 
     test_accuracy = correct / total
-    print(f'Test Accuracy: {test_accuracy:.4f}')
+    print(f'Final Model\'s Test Accuracy: {test_accuracy:.4f}')
 
-    # Save the trained model to a file
-    print('Saving the Trained Model...')
-    model_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..'))
-    if not os.path.exist(os.path.join(model_path, 'saved_models')):
-        os.mkdir(os.path.join(model_path, 'saved_models'))
-    model_path = os.path.join(model_path, 'saved_models')
-    model_name = f'final_model_kernel_{conv_kernel_size}_pooling_kernel_{pooling_kernel_size}'
-    torch.save(model.state_dict(), os.path.join(model_path, f'{model_name}.pth'))
+    print('Testing Using the Best Model...')
+    # Test the trained model
+    best_model_name = f'best_model_kernel_{conv_kernel_size}_pooling_kernel_{pooling_kernel_size}'
+    model.load_state_dict(torch.load(os.path.join(model_path, f'{best_model_name}.pth')))
+    model.eval()
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for data, target in tqdm(test_loader, desc='Testing', unit='batch'):
+            data, target = data.to(device), target.to(device)
+            output = model(data)
+            _, predicted = torch.max(output.data, 1)
+            total += target.size(0)
+            correct += (predicted == target).sum().item()
+
+    test_accuracy = correct / total
+    print(f'Best Model\'s Test Accuracy: {test_accuracy:.4f}')
 
 
 if __name__ == "__main__":
