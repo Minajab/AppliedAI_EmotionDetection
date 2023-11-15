@@ -64,8 +64,8 @@ if __name__ == '__main__':
     image_height = 48  
 
     main_model = EmotionCNN(num_classes=num_classes, width=image_width, height=image_height)
-    variant1 = EmotionCNN(num_classes=num_classes, width=image_width, height=image_height)  # Adjust parameters for variant
-    variant2 = EmotionCNN(num_classes=num_classes, width=image_width, height=image_height)  # Adjust parameters for variant
+    variant1 = EmotionCNN(num_classes=num_classes, width=image_width, height=image_height)  
+    variant2 = EmotionCNN(num_classes=num_classes, width=image_width, height=image_height) 
 
   
     script_dir = os.path.dirname(os.path.abspath(__file__))
