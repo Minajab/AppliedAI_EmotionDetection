@@ -59,9 +59,9 @@ if __name__ == '__main__':
     test_loader = DataLoader(test_dataset, batch_size=128, shuffle=False)
 
 
-    num_classes = 4  # Update this to the number of classes in your dataset
-    image_width = 48  # Update this to the width of your images
-    image_height = 48  # Update this to the height of your images
+    num_classes = 4 
+    image_width = 48  
+    image_height = 48  
 
     main_model = EmotionCNN(num_classes=num_classes, width=image_width, height=image_height)
     variant1 = EmotionCNN(num_classes=num_classes, width=image_width, height=image_height)  # Adjust parameters for variant
