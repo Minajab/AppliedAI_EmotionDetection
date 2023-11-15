@@ -39,7 +39,7 @@ def evaluate_model(model, test_loader):
 if __name__ == '__main__':
     # Path to the dataset directory
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    data_dir = os.path.join(base_dir, 'Dataset', 'Cleared_data')  # Update if your data is in a different directory
+    data_dir = os.path.join(base_dir, 'Dataset', 'Cleared_data') 
 
     # Data transformations
     transform = transforms.Compose([
