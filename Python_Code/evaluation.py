@@ -3,7 +3,7 @@ import os
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_recall_fscore_support
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
-from model import EmotionCNN  # This assumes that model.py is in the same directory as evaluation.py
+from model import EmotionCNN 
 
 def evaluate_model(model, test_loader):
     model.eval()
