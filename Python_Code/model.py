@@ -1,6 +1,4 @@
-import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import math
 
 
@@ -14,53 +12,55 @@ def maxpool_output_size(input_size, kernel_size, stride=1, padding=0):
 
 # Define a customizable CNN model for emotion detection
 class EmotionCNN(nn.Module):
-    def __init__(self, num_classes: int, width: int, height: int, kernel_size=3, pooling_kernel=2):
+    def __init__(self, num_classes: int, width: int, height: int, kernel_size=3, pooling_kernel=2, layers=[64, 128]):
         super(EmotionCNN, self).__init__()
-        self.pooling_kernel = 2
-        self.num_classes = num_classes
 
-        # Define convolutional layers
-        self.conv1 = nn.Conv2d(1, 64, kernel_size=3)
-        self.batch_norm1 = nn.BatchNorm2d(64)
-        self.dropout1 = nn.Dropout2d(p=0.5)
-        conv_output_width = conv_output_size(width, kernel_size)
-        conv_output_width = maxpool_output_size(conv_output_width, pooling_kernel, stride=pooling_kernel)
-        conv_output_height = conv_output_size(height, kernel_size)
-        conv_output_height = maxpool_output_size(conv_output_height, pooling_kernel, stride=pooling_kernel)
-        self.conv2 = nn.Conv2d(64, 128, kernel_size=3)
-        self.batch_norm2 = nn.BatchNorm2d(128)
-        self.dropout2 = nn.Dropout2d(p=0.5)
-        conv_output_width = conv_output_size(conv_output_width, kernel_size)
-        conv_output_width = maxpool_output_size(conv_output_width, pooling_kernel, stride=pooling_kernel)
-        conv_output_height = conv_output_size(conv_output_height, kernel_size)
-        conv_output_height = maxpool_output_size(conv_output_height, pooling_kernel, stride=pooling_kernel)
+        # Initial input channels
+        in_channels = 1
 
-        # Fully Connected Layers
-        self.fc1 = nn.Linear(128 * conv_output_width * conv_output_height, 256)
-        self.batch_norm_fc1 = nn.BatchNorm1d(256)
-        self.dropout_fc1 = nn.Dropout(0.5)
+        # Define the convolutional blocks in a loop
+        model_layers = []
+        conv_output_width = width
+        conv_output_height = height
+        for i in range(len(layers)):
+            out_channels = layers[i]
+            model_layers.append(nn.Conv2d(in_channels, out_channels, kernel_size=kernel_size))
+            model_layers.append(nn.BatchNorm2d(out_channels))
+            model_layers.append(nn.ReLU())
+            model_layers.append(nn.MaxPool2d(kernel_size=pooling_kernel))
+            model_layers.append(nn.Dropout2d(p=0.5))
+            # Update input channels for the next block
+            in_channels = layers[i]
 
-        self.fc2 = nn.Linear(256, 128)
-        self.batch_norm_fc2 = nn.BatchNorm1d(128)
-        self.dropout_fc2 = nn.Dropout(0.5)
+            # Calculate output width and height after convolution and pooling
+            conv_output_width = conv_output_size(conv_output_width, kernel_size)
+            conv_output_width = maxpool_output_size(conv_output_width, pooling_kernel, stride=pooling_kernel)
+            conv_output_height = conv_output_size(conv_output_height, kernel_size)
+            conv_output_height = maxpool_output_size(conv_output_height, pooling_kernel, stride=pooling_kernel)
 
-        # Output layer
-        self.fc_out = nn.Linear(128, num_classes)
+
+        # Flatten before the fully connected layers
+        model_layers.append(nn.Flatten())
+
+        # Fully Connected Layer 1
+        model_layers.append(nn.Linear(in_channels * conv_output_width * conv_output_height, in_channels * 2))
+        model_layers.append(nn.BatchNorm1d(in_channels * 2))
+        model_layers.append(nn.ReLU())
+        model_layers.append(nn.Dropout(p=0.5))
+
+        # Fully Connected Layer 2
+        model_layers.append(nn.Linear(in_channels * 2, in_channels * 4))
+        model_layers.append(nn.BatchNorm1d(in_channels * 4))
+        model_layers.append(nn.ReLU())
+        model_layers.append(nn.Dropout(p=0.5))
+
+        # Output Layer
+        model_layers.append(nn.Linear(in_channels * 4, num_classes))
+
+        # Combine all the layers
+        self.model = nn.Sequential(*model_layers)
 
     def forward(self, x):
         # Convolution Layers
-        x = F.max_pool2d(F.relu(self.batch_norm1(self.conv1(x))), self.pooling_kernel)
-        x = self.dropout1(x)
-        x = F.max_pool2d(F.relu(self.batch_norm2(self.conv2(x))), self.pooling_kernel)
-        x = self.dropout2(x)
-
-        # Flatten
-        x = x.view(x.size(0), -1)
-
-        # Fully Connected Layers
-        x = self.dropout_fc1(F.relu(self.batch_norm_fc1(self.fc1(x))))
-        x = self.dropout_fc2(F.relu(self.batch_norm_fc2(self.fc2(x))))
-
-        # Output layer
-        x = self.fc_out(x)
+        x = self.model(x)
         return x
