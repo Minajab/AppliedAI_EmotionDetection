@@ -12,95 +12,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from model import EmotionCNN
 
-def Producing_confussion(Evaluation, labels, predicted):
-    i = 0
-    while i < len(labels):
-        if (labels[i] == 0):
-            if (predicted[i] == 0):
-                Evaluation[0][0] += 1
-            else:
-                if (predicted[i] == 1):
-                    Evaluation[1][1] += 1
-                elif (predicted[i] == 2):
-                    Evaluation[2][1] += 1
-                else:
-                    Evaluation[3][1] += 1
-        elif (labels[i] == 1):
-            if (predicted[i] == 1):
-                Evaluation[1][0] += 1
-            else:
-                if (predicted[i] == 0):
-                    Evaluation[0][1] += 1
-                elif (predicted[i] == 2):
-                    Evaluation[2][1] += 1
-                else:
-                    Evaluation[3][1] += 1
-        elif (labels[i] == 2):
-            if (predicted[i] == 2):
-                Evaluation[2][0] += 1
-            else:
-                if (predicted[i] == 0):
-                    Evaluation[0][1] += 1
-                elif (predicted[i] == 1):
-                    Evaluation[1][1] += 1
-                else:
-                    Evaluation[3][1] += 1
-        else:
-            if (predicted[i] == 3):
-                Evaluation[3][0] += 1
-            else:
-                if (predicted[i] == 0):
-                    Evaluation[0][1] += 1
-                elif (predicted[i] == 1):
-                    Evaluation[1][1] += 1
-                else:
-                    Evaluation[2][1] += 1
-        i += 1
-    return Evaluation
-
-
-def Micro_evaluation(Evaluation, real_labels):
-    Avg_precission = (Evaluation[0][0] + Evaluation[1][0] + Evaluation[2][0] + Evaluation[3][0])/ len(real_labels)
-    Avg_recall = Avg_precission
-    Avg_f1_score = 2 * (Avg_recall * Avg_precission) / (Avg_recall + Avg_precission)
-    print("\nmicro\n")
-    print("\nprecission and recall:\n")
-    print(Avg_precission)
-    print("\nf1_score:\n")
-    print(Avg_f1_score)
-
-
-def Macro_evaluation(Evaluation, labels):
-    Avg_precission = ((Evaluation[0][0] / (Evaluation[0][0] + Evaluation[1][0])) + (
-            Evaluation[1][0] / (Evaluation[1][0] + Evaluation[1][1])) + (
-                              Evaluation[2][0] / (Evaluation[2][0] + Evaluation[2][1])) + (
-                              Evaluation[3][0] / (Evaluation[3][0] + Evaluation[3][1]))) / 4
-    Avg_recall = (Evaluation[0][0] / labels.count(0) + Evaluation[1][0] / labels.count(1) + Evaluation[2][
-        0] / labels.count(2) + Evaluation[3][0] / labels.count(3)) / 4
-    Avg_f1_score = ((2 * (
-            (Evaluation[0][0] / (Evaluation[0][0] + Evaluation[1][0])) * (Evaluation[0][0] / labels.count(0))) / (
-                             (Evaluation[0][0] / (Evaluation[0][0] + Evaluation[1][0])) + (
-                             Evaluation[0][0] / labels.count(0))))
-                    + ((2 * (Evaluation[1][0] / (Evaluation[1][0] + Evaluation[1][1])) * (
-                    Evaluation[1][0] / labels.count(1))) / (
-                               (Evaluation[1][0] / (Evaluation[1][0] + Evaluation[1][1])) + (
-                               Evaluation[1][0] / labels.count(1))))
-                    + ((2 * (Evaluation[2][0] / (Evaluation[2][0] + Evaluation[2][1])) * (Evaluation[2][
-                                                                                              0] / labels.count(2))) / (
-                               (Evaluation[2][0] / (Evaluation[2][0] + Evaluation[2][1])) + (Evaluation[2][
-                                                                                                 0] / labels.count(
-                           2))))
-                    + ((2 * (Evaluation[3][0] / (Evaluation[3][0] + Evaluation[3][1])) * (
-                    Evaluation[3][0] / labels.count(3))) / (
-                               (Evaluation[3][0] / (Evaluation[3][0] + Evaluation[3][1])) + (
-                               Evaluation[3][0] / labels.count(3))))) / 4
-    print("\nmacro\n")
-    print("\nprecission:\n")
-    print(Avg_precission)
-    print("\nrecall:\n")
-    print(Avg_recall)
-    print("\nf1_score\n")
-    print(Avg_f1_score)
+      
     
 def main(args):
     # Setting Manual Seed for Reproducibility
@@ -268,8 +180,7 @@ def main(args):
     model.eval()
     correct = 0
     total = 0
-    Evaluation = [[0, 0], [0, 0], [0, 0], [0, 0]]
-    real_labels = []
+    
     with torch.no_grad():
         for data, target in tqdm(test_loader, desc='Testing', unit='batch'):
             data, target = data.to(device), target.to(device)
@@ -278,11 +189,8 @@ def main(args):
             output = model(data)
             _, predicted = torch.max(output.data, 1)
             total += target.size(0)
-            correct += (predicted == target).sum().item()
-            Evaluation = Producing_confussion(Evaluation,
-                                              target, predicted)
-    Micro_evaluation(Evaluation, real_labels)
-    Macro_evaluation(Evaluation, real_labels)
+            correct += (predicted == target).sum().item()            
+    
     test_accuracy = correct / total
     print(f'Best Model\'s Test Accuracy: {test_accuracy:.4f}')
 
