@@ -5,7 +5,6 @@ import torch.optim as optim
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 from torchvision import datasets
-import math
 import argparse
 from tqdm import tqdm
 import numpy as np
@@ -23,6 +22,9 @@ def main(args):
     batch_size = args.batch_size
     conv_kernel_size = args.conv_kernel
     pooling_kernel_size = args.pooling_kernel
+    if args.layers.strip() == '':
+        raise Exception("--layers cannot be empty!")
+    layers = [int(layer.strip()) for layer in args.layers.split(',')]
     Input_directory = os.path.abspath(
         os.path.join(os.path.dirname(__file__), '..', 'Dataset'))
 
@@ -33,14 +35,6 @@ def main(args):
     ])
 
     dataset = datasets.ImageFolder(root=Input_directory, transform=transform)
-
-    # (Un)Comment the next SIX lines (use to test code on a smaller sample of the dataset)
-    # print('Sampling the Dataset...')
-    # number_of_images = len(dataset)
-    # indices = list(range(number_of_images))
-    # labels = [dataset[i][1] for i in range(number_of_images)]
-    # _, dataset_indices = train_test_split(indices, test_size=0.4, stratify=labels, random_state=42)
-    # dataset = torch.utils.data.Subset(dataset, dataset_indices)
 
     number_of_images = len(dataset)
     # Get the indices of the original dataset
@@ -81,7 +75,8 @@ def main(args):
 
     # Create a model instance and define the loss function and optimizer
     model = EmotionCNN(num_classes, image_width, image_height, kernel_size=conv_kernel_size,
-                       pooling_kernel=pooling_kernel_size)
+                       pooling_kernel=pooling_kernel_size, layers=layers)
+    model.to(device)
 
     # Define loss function and optimizer
     criterion = nn.CrossEntropyLoss()
@@ -101,6 +96,8 @@ def main(args):
     # Training loop
     print('Training...')
     best_validation_error = np.inf
+    train_losses = []
+    validation_losses = []
     with tqdm(range(num_epochs), unit='epoch') as tepoch:
         for epoch in tepoch:
             tepoch.set_description(f'Epoch {epoch}')
@@ -133,15 +130,19 @@ def main(args):
                 'Train Loss': running_loss / total_data,
                 'Validation Loss': val_loss / val_total_data,
             }
+            train_losses.append(postfix['Train Loss'])
+            validation_losses.append(postfix['Validation Loss'])
             tepoch.set_postfix(ordered_dict=postfix)
-            if (val_loss / val_total_data) < best_validation_error:
+            # We want the model to be trained for at least 10 epochs. Epoch starts from 0, so it should be at least 9
+            if epoch >= 9 and (val_loss / val_total_data) < best_validation_error:
                 best_validation_error = val_loss / val_total_data
                 model_path = os.path.abspath(
                     os.path.join(os.path.dirname(__file__), '..'))
                 if not os.path.exists(os.path.join(model_path, 'saved_models')):
                     os.mkdir(os.path.join(model_path, 'saved_models'))
                 model_path = os.path.join(model_path, 'saved_models')
-                model_name = f'best_model_kernel_{conv_kernel_size}_pooling_kernel_{pooling_kernel_size}'
+                layers_str = '_'.join(map(str, layers))
+                model_name = f'best_model_kernel_{conv_kernel_size}_pooling_kernel_{pooling_kernel_size}_{layers_str}'
                 torch.save(model.state_dict(), os.path.join(model_path, f'{model_name}.pth'))
 
     print('Training has been Concluded...')
@@ -153,8 +154,18 @@ def main(args):
     if not os.path.exists(os.path.join(model_path, 'saved_models')):
         os.mkdir(os.path.join(model_path, 'saved_models'))
     model_path = os.path.join(model_path, 'saved_models')
-    model_name = f'final_model_kernel_{conv_kernel_size}_pooling_kernel_{pooling_kernel_size}'
+    layers_str = '_'.join(map(str, layers))
+    model_name = f'final_model_kernel_{conv_kernel_size}_pooling_kernel_{pooling_kernel_size}_{layers_str}'
     torch.save(model.state_dict(), os.path.join(model_path, f'{model_name}.pth'))
+    losses_path = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), '..'))
+    if not os.path.exists(os.path.join(losses_path, 'losses')):
+        os.mkdir(os.path.join(losses_path, 'losses'))
+    losses_path = os.path.join(losses_path, 'losses')
+    layers_str = '_'.join(map(str, layers))
+    losses_name = f'model_kernel_{conv_kernel_size}_pooling_kernel_{pooling_kernel_size}_{layers_str}'
+    np.savetxt(os.path.join(losses_path, f'{losses_name}_train.csv'), train_losses, delimiter=',')
+    np.savetxt(os.path.join(losses_path, f'{losses_name}_val.csv'), validation_losses, delimiter=',')
 
     print('Testing Using the Final Model...')
     # Test the trained model
@@ -174,7 +185,8 @@ def main(args):
 
     print('Testing Using the Best Model...')
     # Test the trained model
-    best_model_name = f'best_model_kernel_{conv_kernel_size}_pooling_kernel_{pooling_kernel_size}'
+    layers_str = '_'.join(map(str, layers))
+    best_model_name = f'best_model_kernel_{conv_kernel_size}_pooling_kernel_{pooling_kernel_size}_{layers_str}'
     model.load_state_dict(torch.load(os.path.join(model_path, f'{best_model_name}.pth')))
     model.eval()
     correct = 0
@@ -193,13 +205,15 @@ def main(args):
 
 if __name__ == "__main__":
     # Create an ArgumentParser object
-    parser = argparse.ArgumentParser(description='Train an Emotion Detection Model with Two CNN Layers.')
+    parser = argparse.ArgumentParser(description='Train an Emotion Detection Model.')
 
     # Define command-line arguments
-    parser.add_argument('--epochs', type=int, default=10, help='Number of Epochs (default: 10)')
+    parser.add_argument('--epochs', type=int, default=100, help='Number of Epochs (default: 100)')
     parser.add_argument('--batch_size', type=int, default=10, help='Batch Size (default: 10)')
     parser.add_argument('--conv_kernel', type=int, default=3, help='Kernel Size for the Conv Module (default: 3)')
     parser.add_argument('--pooling_kernel', type=int, default=2, help='Kernel Size for the Pooling Module (default: 2)')
+    parser.add_argument('--layers', type=str, default='64,128',
+                        help='Layers in Comma Separated Format (default: 64,128)')
 
     # Parse the command-line arguments
     args = parser.parse_args()
