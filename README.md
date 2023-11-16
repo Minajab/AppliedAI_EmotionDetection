@@ -50,19 +50,27 @@ This folder includes the following files:
 ### Data cleaning and processing
 
 ## List of dependencies
+The following dependencies have been installed for Python 3.9.6 and above.
 
-1. matplotlib
-2. Pillow
-3. opencv-python
-4. numpy
-5. scikit-image 
+1. matplotlib==3.8.0
+2. Pillow==10.1.0
+3. opencv-python==4.8.1.78
+4. numpy==1.26.1
+5. scikit-image==0.22.0
+6. tifffile==2023.9.26
+7. torch==2.1.0
+8. torchaudio==2.1.0
+9. torchvision==0.16.0
+10. tqdm==4.66.1
+11. scikit-learn==1.3.2
+12. seaborn==0.13.0
     
 
 ## Follow below steps for cleaning and processing your images:
 1. Download the project's ZIP file and unzip it. Then, open your command prompt (CMD) and navigate to the project directory.
 2. Use `python -m venv venv` to create a virtual environment called venv. For more information about Python virtual environments, please refer to [https://docs.python.org/3/library/venv.html](https://docs.python.org/3/library/venv.html).
-3. If you are using macOS or Linux, use the command source venv/bin/activate to activate the virtual environment. However, if you are on Windows, navigate to the 'Scripts' directory within the virtual environment and execute the command 'activate'.  
-4. Use `pip install -r requirements.txt` to install all needed Python packages.
+3. If you are using macOS or Linux, use the command `source venv/bin/activate` to activate the virtual environment. However, if you are on Windows, navigate to the 'Scripts' directory within the virtual environment and execute the command 'activate'.  
+4. Use `pip install -r requirements.txt` to install all needed Python packages (if you have GPU with cuda installed, you can run `pip install -r requirements_gpu.txt`).
 5. Download the original data from [https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing](https://drive.google.com/drive/folders/1-O9mxlY-pK7YS0uhr4juOBKvFHw5oN1C?usp=sharing) and please place four folders containing emotional classes into the 'Dataset' directory. This 'Dataset' directory will serve as the input for the clearance code.
 6. Change directory to Python_Code. Run `python Clearance.py`. You'll notice that the main function calls all other processing and cleaning functions in a specific order.
 7. Ultimately, the Dataset diretory will contain the cleaned and preprocessed data, as the processed and cleaned images have been overwritten in their original directories. 
@@ -87,3 +95,50 @@ After executing the scripts, you'll obtain:
 **Image Gallery**: A quick glance at the kind of images present in each class, helping in understanding dataset diversity.
 
 **Pixel Intensity Graphs**: Depicting the spread of pixel values, which can guide further preprocessing steps.
+
+### Training
+
+The model is available in the ___model.py___ file. The training file is the ___train.py___ file. You can train a CNN model with arbitrary number of convolution layers and any desired hidden neurons using the ___train.py___ file without the need to change the code. The training script accepts the following arguments:
+
+1. -h, --help            show the help message and exit
+2. --epochs EPOCHS       Number of Epochs (default: 100)
+3. --batch_size BATCH_SIZE
+                        Batch Size (default: 10)
+4. --conv_kernel CONV_KERNEL
+                        Kernel Size for the Conv Module (default: 3)
+5. --pooling_kernel POOLING_KERNEL
+                        Kernel Size for the Pooling Module (default: 2)
+6. --layers LAYERS       Layers in Comma Separated Format (default: 64,128)
+
+For example, running the following command `python train.py --epochs=100 --batch_size=10 --conv_kernel=3 --pooling_kernel=2 --layers="64,128,256"` will train a model for 100 epochs, with batch size of 10, and three convolutional layers with 64, 128, and 256 hidden neurons respectively and with a 3x3 kernel and 2x2 pooling kernel size.
+
+The training code splits the data into 70% training, 15% validation, and 15% testing data. To split the data, stratified splitting has been used to ensure having the same distribution of labels in the training, validation, and testing sets. Because the random_state variable and torch.manual_seed has been set, the code will produce the same results and splits when you run them multiple times.
+
+After running the code, the training and validation loss of the model will be stored in a folder called ___losses___ in the same directory as the README. The best performing model (i.e., the model with the lowest validation loss) after the _10_ th epoch and the model trained after the _n_ th epoch are stored in a folder called ___saved_models___ in the same directory as the README file.
+
+### Evaluation
+
+The training file is the ___eval.py___ file. You can evaluate any of you trained CNN models using the ___eval.py___ file without the need to change the code. The evaluation script accepts the following arguments:
+
+1. -h, --help            show the help message and exit
+2. --batch_size BATCH_SIZE
+                        Batch Size (default: 10)
+3. --conv_kernel CONV_KERNEL
+                        Kernel Size for the Conv Module (default: 3)
+4. --pooling_kernel POOLING_KERNEL
+                        Kernel Size for the Pooling Module (default: 2)
+5. --layers LAYERS       Layers in Comma Separated Format (default: 64,128)
+
+For example, running the following command `python eval.py --batch_size=10 --conv_kernel=3 --pooling_kernel=2 --layers="64,128,256"` will evaluate the previously trained model with three convolutional layers with 64, 128, and 256 hidden neurons respectively and with a 3x3 kernel and 2x2 pooling kernel size. The code uses the best and final models stored in the ___saved_models___ directory. The batch size is used to feed the test data in mini-batches to the model.
+
+The evaluation code first plots the training and evaluation losses of the model to better understand whether the model has converged. Then it will calculate the following for both the best and final models:
+- Confusion Matrix
+- Micro Precision
+- Micro Recall
+- Micro F1 Score
+- Micro Accuracy
+- Macro Precision
+- Macro Recall
+- Macro F1 Score
+
+Finally, the code will store the confusion matrix, metrics, and the train and validation losses plot in a directory called ___results___ living in the same directory as the README file.
