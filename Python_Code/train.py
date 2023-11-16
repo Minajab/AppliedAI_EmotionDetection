@@ -196,8 +196,6 @@ def main(args):
     with torch.no_grad():
         for data, target in tqdm(test_loader, desc='Testing', unit='batch'):
             data, target = data.to(device), target.to(device)
-            for label in target:
-                real_labels.append(label)
             output = model(data)
             _, predicted = torch.max(output.data, 1)
             total += target.size(0)
