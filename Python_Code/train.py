@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 from model import EmotionCNN
 
       
-    
+
 def main(args):
     # Setting Manual Seed for Reproducibility
     torch.manual_seed(32)
