@@ -118,7 +118,7 @@ After running the code, the training and validation loss of the model will be st
 
 ### Evaluation
 
-The training file is the ___eval.py___ file. You can evaluate any of you trained CNN models using the ___eval.py___ file without the need to change the code. The evaluation script accepts the following arguments:
+The evaluation file is the ___eval.py___ file. You can evaluate any of you trained CNN models using the ___eval.py___ file without the need to change the code. The evaluation script accepts the following arguments:
 
 1. -h, --help            show the help message and exit
 2. --batch_size BATCH_SIZE
@@ -142,3 +142,31 @@ The evaluation code first plots the training and evaluation losses of the model 
 - Macro F1 Score
 
 Finally, the code will store the confusion matrix, metrics, and the train and validation losses plot in a directory called ___results___ living in the same directory as the README file.
+
+### Application Mode
+
+The application mode file is the ___application_mode.py___ file. You can run the model in the application mode for any of you trained CNN models using the ___application_mode.py___ file without the need to change the code and with any of the datapoints you desire. The application mode script accepts the following arguments:
+
+1. -h, --help            show the help message and exit
+2. --conv_kernel CONV_KERNEL
+                        Kernel Size for the Conv Module (default: 3)
+3. --pooling_kernel POOLING_KERNEL
+                        Kernel Size for the Pooling Module (default: 2)
+4. --layers LAYERS       Layers in Comma Separated Format (default: 64,128)
+5. --data DATA           The Data You Want to Run the Model On. The value can be "all", "rand", any number between 0 and 1 representing a split of the dataset, or a single number       
+                        representing a specific datapoint index from the dataset (default: "rand")
+
+
+For example, running the following command `python application_mode.py --conv_kernel=3 --pooling_kernel=2 --layers="64,128,256" --data=0.1` will run the previously trained model with three convolutional layers with 64, 128, and 256 hidden neurons respectively and with a 3x3 kernel and 2x2 pooling kernel size and on 10% of the data in the application mode. Or for example, running the following command `python application_mode.py --conv_kernel=3 --pooling_kernel=2 --layers="64,128,256" --data=46` will run the previously trained model with three convolutional layers with 64, 128, and 256 hidden neurons respectively and with a 3x3 kernel and 2x2 pooling kernel size and on the datapoint at index 46 in the application mode.
+
+The code uses the best and final models stored in the ___saved_models___ directory.
+
+The code will return the predicted and true label of the datapoint if the code is used to run the model on one datapoint. Otherwise, the code will calculate the following for both the best and final models:
+- Confusion Matrix
+- Micro Precision
+- Micro Recall
+- Micro F1 Score
+- Micro Accuracy
+- Macro Precision
+- Macro Recall
+- Macro F1 Score
