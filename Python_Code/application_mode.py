@@ -91,6 +91,20 @@ def main(args):
         indices = list(range(number_of_images))
         # Get the labels of the dataset
         labels = [dataset[i][1] for i in range(number_of_images)]
+    elif len(sample) > 5 and 'name_' == sample[:5]:
+        idx = -1
+        for i in range(0, total_number_of_images):
+            image_name = dataset.samples[i][0].split('/')[-1]
+            if image_name == sample[5:]:
+                idx = i
+                break
+        if idx < 0:
+            raise Exception('Image Does Not Exist!')
+        # Get the indices of the original dataset
+        indices = [idx]
+        number_of_images = total_number_of_images = 1
+        # Get the labels of the dataset
+        labels = [dataset[i][1] for i in indices]
     elif sample == 'rand':
         number_of_images = 1
         # Get the indices of the original dataset
