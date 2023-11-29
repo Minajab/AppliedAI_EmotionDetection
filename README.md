@@ -157,7 +157,7 @@ The application mode file is the ___application_mode.py___ file. You can run the
                         representing a specific datapoint index from the dataset (default: "rand")
 
 
-For example, running the following command `python application_mode.py --conv_kernel=3 --pooling_kernel=2 --layers="64,128,256" --data=0.1` will run the previously trained model with three convolutional layers with 64, 128, and 256 hidden neurons respectively and with a 3x3 kernel and 2x2 pooling kernel size and on 10% of the data in the application mode. Or for example, running the following command `python application_mode.py --conv_kernel=3 --pooling_kernel=2 --layers="64,128,256" --data=46` will run the previously trained model with three convolutional layers with 64, 128, and 256 hidden neurons respectively and with a 3x3 kernel and 2x2 pooling kernel size and on the datapoint at index 46 in the application mode. If you run `python application_mode.py --conv_kernel=3 --pooling_kernel=2 --layers="64,128,256" --data="name_1 0.jpg"`, will run the previously trained model with three convolutional layers with 64, 128, and 256 hidden neurons respectively and with a 3x3 kernel and 2x2 pooling kernel size and on the image with the name <ins>**1 0.jpg**</ins>.
+For example, running the following command `python application_mode.py --conv_kernel=3 --pooling_kernel=2 --layers="64,128,256" --data=0.1` will run the previously trained model with three convolutional layers with 64, 128, and 256 hidden neurons respectively and with a 3x3 kernel and 2x2 pooling kernel size and on 10% of the data in the application mode. Or for example, running the following command `python application_mode.py --conv_kernel=3 --pooling_kernel=2 --layers="64,128,256" --data=46` will run the previously trained model with three convolutional layers with 64, 128, and 256 hidden neurons respectively and with a 3x3 kernel and 2x2 pooling kernel size and on the datapoint at index 46 in the application mode.
 
 The code uses the best and final models stored in the ___saved_models___ directory.
 
@@ -170,3 +170,53 @@ The code will return the predicted and true label of the datapoint if the code i
 - Macro Precision
 - Macro Recall
 - Macro F1 Score
+
+### K-Fold Cross Validation Training and Evaluation
+
+The model is available in the ___model.py___ file. The training file is the ___k_fold_train.py___ file. You can train a CNN model with arbitrary number of convolution layers, any desired hidden neurons and for any number of folds using the ___k_fold_train.py___ file without the need to change the code. The training script accepts the following arguments:
+
+1. -h, --help            show the help message and exit
+2. --epochs EPOCHS       Number of Epochs (default: 100)
+3. --batch_size BATCH_SIZE
+                        Batch Size (default: 10)
+4. --conv_kernel CONV_KERNEL
+                        Kernel Size for the Conv Module (default: 3)
+5. --pooling_kernel POOLING_KERNEL
+                        Kernel Size for the Pooling Module (default: 2)
+6. --layers LAYERS       Layers in Comma Separated Format (default: 64,128)
+7. --num_folds NUM_FOLDS
+                        Number of Folds (default: 10)
+
+
+For example, running the following command `python k_fold_train.py --epochs=100 --batch_size=10 --conv_kernel=3 --pooling_kernel=2 --layers="64,128,256" --num_folds=10` will train a model for 100 epochs, with batch size of 10, and three convolutional layers with 64, 128, and 256 hidden neurons respectively and with a 3x3 kernel and 2x2 pooling kernel size and using 10-fold cross validation strategy.
+
+During each fold, 20% of the training data is used as the validation set to find the best performing model of the fold. Both splitting the data into k folds and train and validation split use the stratified splitting technique. Because the random_state variable and torch.manual_seed has been set, the code will produce the same results and splits when you run them multiple times.
+
+After running the code, the training and validation loss of the model will be stored in a folder called ___losses_k_fold___ (k is replaced by the actual value of k) in the same directory as the README. The best performing model (i.e., the model with the lowest validation loss) after the _10_ th epoch and the model trained after the _n_ th epoch are stored in a folder called ___saved_models_k_fold___ (k is replaced by the actual value of k) in the same directory as the README file.
+
+The evaluation file is the ___k_fold_eval.py___ file. You can evaluate any of you trained CNN models using the ___k_fold_eval.py___ file without the need to change the code. The evaluation script accepts the following arguments:
+
+1. -h, --help            show the help message and exit
+2. --batch_size BATCH_SIZE
+                        Batch Size (default: 10)
+3. --conv_kernel CONV_KERNEL
+                        Kernel Size for the Conv Module (default: 3)
+4. --pooling_kernel POOLING_KERNEL
+                        Kernel Size for the Pooling Module (default: 2)
+5. --layers LAYERS       Layers in Comma Separated Format (default: 64,128)
+6. --num_folds NUM_FOLDS
+                        Number of Folds (default: 10)
+
+For example, running the following command `python k_fold_eval.py --batch_size=10 --conv_kernel=3 --pooling_kernel=2 --layers="64,128,256" --num_folds=10` will evaluate the previously trained model using 10-fold cross validation technique with three convolutional layers each with 64, 128, and 256 hidden neurons respectively and with a 3x3 kernel and 2x2 pooling kernel size. The code uses the best and final models stored in the ___saved_models_k_fold___ (k will be replaced by its actual number) directory. The batch size is used to feed the test data in mini-batches to the model.
+
+The evaluation code first plots the training and evaluation losses of the model for each fold to better understand whether the model has converged. Then it will calculate the following for both the best and final models of each fold:
+- Confusion Matrix
+- Micro Precision
+- Micro Recall
+- Micro F1 Score
+- Micro Accuracy
+- Macro Precision
+- Macro Recall
+- Macro F1 Score
+
+Finally, the code will store the confusion matrix, metrics, and the train and validation losses plot in a directory called ___results_k_fold___ (k will be replaced by its actual value) living in the same directory as the README file.
