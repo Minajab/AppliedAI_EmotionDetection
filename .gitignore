@@ -7,6 +7,12 @@ saved_models_*/
 results_*/
 losses_*/
 .flaskenv
-__pycache__/
+_pycache_/
 .DS_Store
 .vscode
+bias_results/
+Meta_Data/
+Unbiased_Dataset/
+unbiased_losses/
+unbiased_results/
+unbiased_saved_models/
