@@ -223,7 +223,7 @@ Finally, the code will store the confusion matrix, metrics, and the train and va
 
 ### Evaluating Bias in the Model
 
-The metadata (Gender and Age Group information) for the original dataset should be placed in a directory called __Meta_Data__. The file should be called __original_dataset.csv__.
+The metadata (Gender and Age Group information) for the original dataset should be placed in a directory called __Meta_Data__. The file should be called __original_dataset.csv__ (It can be downloaded from[https://drive.google.com/file/d/1tCh7-plO9SuhTNzDKckQNSkFxaQWw9wS/view?usp=sharing](https://drive.google.com/file/d/1tCh7-plO9SuhTNzDKckQNSkFxaQWw9wS/view?usp=sharing)).
 
 The evaluation file is the ___bias_eval.py___ file. You can evaluate any of you trained CNN models using the ___bias_eval.py___ file without the need to change the code. The evaluation script accepts the following arguments:
 
@@ -252,7 +252,7 @@ Finally, the code will store the confusion matrix and the metrics in a directory
 
 ### Bias Mitigation
 
-The model is available in the ___model.py___ file. The dataset for this phase is stored in a directory called __Unbiased_Dataset__. The training process is similar to the previous phase. The training file is the ___unbiased_train.py___ file. You can train a CNN model with arbitrary number of convolution layers and any desired hidden neurons using the ___unbiased_train.py___ file without the need to change the code. The training script accepts the following arguments:
+The model is available in the ___model.py___ file. The dataset for this phase is stored in a directory called __Unbiased_Dataset__ (It can be downloaded from[https://drive.google.com/file/d/1bFQr2gjUMYlRWo2zn5hssffzjNjX3KYu/view?usp=sharing](https://drive.google.com/file/d/1bFQr2gjUMYlRWo2zn5hssffzjNjX3KYu/view?usp=sharing)). The training process is similar to the previous phase. The training file is the ___unbiased_train.py___ file. You can train a CNN model with arbitrary number of convolution layers and any desired hidden neurons using the ___unbiased_train.py___ file without the need to change the code. The training script accepts the following arguments:
 
 1. -h, --help            show the help message and exit
 2. --epochs EPOCHS       Number of Epochs (default: 100)
@@ -270,7 +270,7 @@ The training code splits the data into 70% training, 15% validation, and 15% tes
 
 After running the code, the training and validation loss of the model will be stored in a folder called ___unbiased_losses___ in the same directory as the README. The best performing model (i.e., the model with the lowest validation loss) after the _10_ th epoch and the model trained after the _n_ th epoch are stored in a folder called ___unbiased_saved_models___ in the same directory as the README file.
 
-The metadata (Gender and Age Group information) for the unbiased dataset should be placed in a directory called __Meta_Data__. The file should be called __unbiased_dataset.csv__.
+The metadata (Gender and Age Group information) for the unbiased dataset should be placed in a directory called __Meta_Data__. The file should be called __unbiased_dataset.csv__ (It can be downloaded from [https://drive.google.com/file/d/1O_uYl1_0vlVM57PeIb85q-1g4SV8fM1A/view?usp=sharing](https://drive.google.com/file/d/1O_uYl1_0vlVM57PeIb85q-1g4SV8fM1A/view?usp=sharing)).
 
 The evaluation file is the ___unbiased_eval.py___ file. You can evaluate any of you trained CNN models using the ___unbiased_eval.py___ file without the need to change the code. The evaluation script accepts the following arguments:
 
