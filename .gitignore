@@ -11,8 +11,10 @@ _pycache_/
 .DS_Store
 .vscode
 bias_results/
-Meta_Data/
-Unbiased_Dataset/
 unbiased_losses/
 unbiased_results/
 unbiased_saved_models/
+unbiased_losses_*/
+unbiased_results_*/
+unbiased_saved_models_*/
+__pycache__/

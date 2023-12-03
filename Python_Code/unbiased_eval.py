@@ -14,6 +14,13 @@ import pandas as pd
 from tabulate import tabulate
 
 
+
+def add_column_from_category_and_label_values(row):
+    value = row['Age Group'] + ' ' + row['Gender'] + ' ' + row['Emotion']
+    value = value.replace(" ", "_")
+    value = value.replace("-", "_")
+    return value
+
 def calculate_metrics(y_true, y_pred, num_labels):
     conf_matrix = np.zeros((num_labels, num_labels), dtype=int)
 
@@ -95,12 +102,9 @@ def main(args):
     metadata['Age Group'] = metadata['Age Group'].str.strip().str.lower()
     metadata['Gender'] = metadata['Gender'].str.strip().str.lower()
     metadata['Emotion'] = metadata['Emotion'].str.strip().str.lower()
+    metadata['mixed_col'] = metadata.apply(add_column_from_category_and_label_values, axis=1)
 
     number_of_images = len(dataset)
-    # Get the indices of the original dataset
-    indices = list(range(number_of_images))
-    # Get the labels of the dataset
-    labels = [dataset[i][1] for i in range(number_of_images)]
 
     print('Attaching Metadata of Each Image')
     images_metadata = []
@@ -116,6 +120,7 @@ def main(args):
                 'Idx': idx,
                 'Gender': image_metadata.iloc[0]['Gender'],
                 'Age Group': image_metadata.iloc[0]['Age Group'],
+                'MixedCol': image_metadata.iloc[0]['mixed_col'],
             })
         if len(class_metadata[class_metadata['Filename'] == image_name]) > 1:
             print(class_metadata[class_metadata['Filename'] == image_name])
@@ -123,12 +128,24 @@ def main(args):
 
     images_metadata_df = pd.DataFrame(images_metadata)
 
+    indices = list(images_metadata_df['Idx'].values)
+    category_class_combinations = list(images_metadata_df['MixedCol'].values)
+
+    category_class_combinations_mapping = {val: category_class_combinations[idx] for idx, val in enumerate(indices)}
+
+    # Get the labels of the dataset
+    labels = [dataset[i][1] for i in indices]
+
+    labels_mapping = {val: labels[idx] for idx, val in enumerate(indices)}
+
     print('Splitting the Dataset...')
     # Use train_test_split to split the dataset into train, validation, and test sets
-    _, test_val_idx = train_test_split(indices, test_size=0.3, stratify=labels, random_state=42)
+    _, test_val_idx = train_test_split(indices, test_size=0.3, stratify=category_class_combinations,
+                                                   random_state=42)
     _, test_indices = train_test_split(test_val_idx, test_size=0.5,
-                                       stratify=[labels[i] for i in test_val_idx],
-                                       random_state=42)
+                                                 stratify=[category_class_combinations_mapping[i] for i in
+                                                           test_val_idx],
+                                                 random_state=42)
     test_indices = [idx for idx in test_indices if idx in valid_indices]
 
     # Define datasets and data loaders

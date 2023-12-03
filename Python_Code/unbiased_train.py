@@ -65,8 +65,6 @@ def main(args):
                 'Idx': idx,
                 'Gender': image_metadata.iloc[0]['Gender'],
                 'Age Group': image_metadata.iloc[0]['Age Group'],
-                'Class': image_metadata.iloc[0]['Emotion'],
-                'Mixed': image_metadata.iloc[0]['Gender'] + ' - ' + image_metadata.iloc[0]['Age Group'],
                 'MixedCol': image_metadata.iloc[0]['mixed_col'],
             })
         if len(class_metadata[class_metadata['Filename'] == image_name]) > 1:
@@ -79,6 +77,11 @@ def main(args):
     category_class_combinations = list(images_metadata_df['MixedCol'].values)
 
     category_class_combinations_mapping = {val: category_class_combinations[idx] for idx, val in enumerate(indices)}
+
+    # Get the labels of the dataset
+    labels = [dataset[i][1] for i in indices]
+
+    labels_mapping = {val: labels[idx] for idx, val in enumerate(indices)}
 
     print('Splitting the Dataset...')
     # Use train_test_split to split the dataset into train, validation, and test sets
